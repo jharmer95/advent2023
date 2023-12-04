@@ -1,0 +1,7 @@
+[workspace]
+
+members = ["inputs", "day-1"]
+resolver = "2"
+
+[workspace.dependencies]
+inputs = { path = "./inputs" }
