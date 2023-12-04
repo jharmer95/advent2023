@@ -88,10 +88,18 @@ mod tests {
     }
 
     #[test]
-    fn part1_test() {
+    fn part1_ex_test() {
         let result = part1(&get_test_input1());
 
         assert_eq!(result, 142);
+    }
+
+    #[test]
+    fn part1_final_test() {
+        let input = get_input::<String>("../inputs/day-1.txt").expect("Could not parse path!");
+        let result = part1(&input);
+
+        assert_eq!(result, 56108);
     }
 
     #[test]
@@ -102,9 +110,17 @@ mod tests {
     }
 
     #[test]
-    fn part2_test() {
+    fn part2_ex_test() {
         let result = part2(&get_test_input2());
 
         assert_eq!(result, 281)
+    }
+
+    #[test]
+    fn part2_final_test() {
+        let input = get_input::<String>("../inputs/day-1.txt").expect("Could not parse path!");
+        let result = part2(&input);
+
+        assert_eq!(result, 55652);
     }
 }
