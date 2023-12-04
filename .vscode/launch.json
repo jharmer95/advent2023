@@ -4,16 +4,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'inputs'",
+            "name": "Debug unit tests in library 'advent2023'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
                     "--lib",
-                    "--package=inputs"
+                    "--package=advent2023"
                 ],
                 "filter": {
-                    "name": "inputs",
+                    "name": "advent2023",
                     "kind": "lib"
                 }
             },
@@ -23,15 +23,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'day-1'",
+            "name": "Debug executable 'advent2023'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=day-1",
-                    "--package=day-1"
+                    "--bin=advent2023",
+                    "--package=advent2023"
                 ],
                 "filter": {
-                    "name": "day-1",
+                    "name": "advent2023",
                     "kind": "bin"
                 }
             },
@@ -41,17 +41,17 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'day-1'",
+            "name": "Debug integration test 'final_tests'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=day-1",
-                    "--package=day-1"
+                    "--test=final_tests",
+                    "--package=advent2023"
                 ],
                 "filter": {
-                    "name": "day-1",
-                    "kind": "bin"
+                    "name": "final_tests",
+                    "kind": "test"
                 }
             },
             "args": [],

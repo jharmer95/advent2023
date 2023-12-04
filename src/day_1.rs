@@ -1,18 +1,11 @@
-use inputs::get_input;
-
-fn main() {
-    let input = get_input::<String>("inputs/day-1.txt").expect("Could not parse path!");
-
-    println!("Part 1 solution: {:?}", part1(&input));
-    println!("Part 2 solution: {:?}", part2(&input));
-}
-
-fn part1(input: &[String]) -> u64 {
+#[must_use]
+pub fn part1(input: &[String]) -> u64 {
     let numbers = parse_input1(input);
     numbers.iter().sum()
 }
 
-fn part2(input: &[String]) -> u64 {
+#[must_use]
+pub fn part2(input: &[String]) -> u64 {
     let numbers = parse_input2(input);
     numbers.iter().sum()
 }
@@ -95,14 +88,6 @@ mod tests {
     }
 
     #[test]
-    fn part1_final_test() {
-        let input = get_input::<String>("../inputs/day-1.txt").expect("Could not parse path!");
-        let result = part1(&input);
-
-        assert_eq!(result, 56108);
-    }
-
-    #[test]
     fn parse_input2_test() {
         let result = parse_input2(&get_test_input2());
 
@@ -113,14 +98,6 @@ mod tests {
     fn part2_ex_test() {
         let result = part2(&get_test_input2());
 
-        assert_eq!(result, 281)
-    }
-
-    #[test]
-    fn part2_final_test() {
-        let input = get_input::<String>("../inputs/day-1.txt").expect("Could not parse path!");
-        let result = part2(&input);
-
-        assert_eq!(result, 55652);
+        assert_eq!(result, 281);
     }
 }

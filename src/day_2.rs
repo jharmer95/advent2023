@@ -1,8 +1,7 @@
-use inputs::get_input;
 use regex::Regex;
 
 #[derive(Clone, PartialEq, Eq, Debug, Default)]
-struct BlockCount {
+pub struct BlockCount {
     red: u64,
     green: u64,
     blue: u64,
@@ -15,7 +14,7 @@ impl BlockCount {
     }
 
     #[must_use]
-    const fn within(&self, limit: &Self) -> bool {
+    const fn within_limit(&self, limit: &Self) -> bool {
         self.red <= limit.red && self.green <= limit.green && self.blue <= limit.blue
     }
 
@@ -25,26 +24,20 @@ impl BlockCount {
     }
 }
 
-const LIMIT_1: BlockCount = BlockCount {
+pub const TEST_LIMIT: BlockCount = BlockCount {
     red: 12,
     green: 13,
     blue: 14,
 };
 
-fn main() {
-    let input = get_input::<String>("inputs/day-2.txt").expect("Could not parse path!");
-
-    println!("Part 1 solution: {:?}", part1(&LIMIT_1, &input));
-    println!("Part 2 solution: {:?}", part2(&input));
-}
-
-fn part1(limits: &BlockCount, input: &[String]) -> u64 {
+#[must_use]
+pub fn part1(limits: &BlockCount, input: &[String]) -> u64 {
     input
         .iter()
         .map(|s| {
             let (id, block_counts) = parse_line(s);
 
-            if block_counts.iter().all(|count| count.within(limits)) {
+            if block_counts.iter().all(|count| count.within_limit(limits)) {
                 id
             } else {
                 0
@@ -53,7 +46,8 @@ fn part1(limits: &BlockCount, input: &[String]) -> u64 {
         .sum()
 }
 
-fn part2(input: &[String]) -> u64 {
+#[must_use]
+pub fn part2(input: &[String]) -> u64 {
     input
         .iter()
         .map(|s| {
@@ -149,17 +143,9 @@ mod tests {
 
     #[test]
     fn part1_ex_test() {
-        let result = part1(&LIMIT_1, &get_test_input1());
+        let result = part1(&TEST_LIMIT, &get_test_input1());
 
         assert_eq!(result, 8);
-    }
-
-    #[test]
-    fn part1_final_test() {
-        let input = get_input::<String>("../inputs/day-2.txt").expect("Could not parse path!");
-        let result = part1(&LIMIT_1, &input);
-
-        assert_eq!(result, 2331);
     }
 
     #[test]
@@ -167,13 +153,5 @@ mod tests {
         let result = part2(&get_test_input1());
 
         assert_eq!(result, 2286);
-    }
-
-    #[test]
-    fn part2_final_test() {
-        let input = get_input::<String>("../inputs/day-2.txt").expect("Could not parse path!");
-        let result = part2(&input);
-
-        assert_eq!(result, 71585);
     }
 }
