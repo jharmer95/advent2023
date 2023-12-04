@@ -1,35 +1,5 @@
 use regex::Regex;
 
-#[derive(Clone, PartialEq, Eq, Debug, Default)]
-pub struct BlockCount {
-    red: u64,
-    green: u64,
-    blue: u64,
-}
-
-impl BlockCount {
-    #[must_use]
-    const fn new(red: u64, green: u64, blue: u64) -> Self {
-        Self { red, green, blue }
-    }
-
-    #[must_use]
-    const fn within_limit(&self, limit: &Self) -> bool {
-        self.red <= limit.red && self.green <= limit.green && self.blue <= limit.blue
-    }
-
-    #[must_use]
-    const fn power(&self) -> u64 {
-        self.red * self.green * self.blue
-    }
-}
-
-pub const TEST_LIMIT: BlockCount = BlockCount {
-    red: 12,
-    green: 13,
-    blue: 14,
-};
-
 #[must_use]
 pub fn part1(limits: &BlockCount, input: &[String]) -> u64 {
     input
@@ -74,6 +44,36 @@ pub fn part2(input: &[String]) -> u64 {
         .sum()
 }
 
+#[derive(Clone, PartialEq, Eq, Debug, Default)]
+pub struct BlockCount {
+    red: u64,
+    green: u64,
+    blue: u64,
+}
+
+impl BlockCount {
+    #[must_use]
+    const fn new(red: u64, green: u64, blue: u64) -> Self {
+        Self { red, green, blue }
+    }
+
+    #[must_use]
+    const fn within_limit(&self, limit: &Self) -> bool {
+        self.red <= limit.red && self.green <= limit.green && self.blue <= limit.blue
+    }
+
+    #[must_use]
+    const fn power(&self) -> u64 {
+        self.red * self.green * self.blue
+    }
+}
+
+pub const TEST_LIMIT: BlockCount = BlockCount {
+    red: 12,
+    green: 13,
+    blue: 14,
+};
+
 fn parse_line(line: &str) -> (u64, Vec<BlockCount>) {
     let re = Regex::new(r"^Game ([0-9]+): (.*)").unwrap();
     let reg_red = Regex::new(r"([0-9]+) red").unwrap();
@@ -83,23 +83,19 @@ fn parse_line(line: &str) -> (u64, Vec<BlockCount>) {
     let mut blocks = Vec::new();
     let mut id = 0;
 
+    let get_color_count = |line, reg_ex: &Regex| match reg_ex.captures(line).map(|c| c.extract()) {
+        Some((_, [count])) => count.parse::<u64>().unwrap(),
+        None => 0,
+    };
+
     for (_, [idx, rest]) in re.captures_iter(line).map(|caps| caps.extract()) {
         id = idx.parse().unwrap();
 
-        for xx in rest.split("; ") {
+        for sequence in rest.split("; ") {
             blocks.push(BlockCount::new(
-                match reg_red.captures(xx).map(|c| c.extract()) {
-                    Some((_, [count])) => count.parse::<u64>().unwrap(),
-                    None => 0,
-                },
-                match reg_green.captures(xx).map(|c| c.extract()) {
-                    Some((_, [count])) => count.parse::<u64>().unwrap(),
-                    None => 0,
-                },
-                match reg_blue.captures(xx).map(|c| c.extract()) {
-                    Some((_, [count])) => count.parse::<u64>().unwrap(),
-                    None => 0,
-                },
+                get_color_count(sequence, &reg_red),
+                get_color_count(sequence, &reg_green),
+                get_color_count(sequence, &reg_blue),
             ));
         }
     }
@@ -111,7 +107,7 @@ fn parse_line(line: &str) -> (u64, Vec<BlockCount>) {
 mod tests {
     use super::*;
 
-    fn get_test_input1() -> [String; 5] {
+    fn get_test_input() -> [String; 5] {
         [
             "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green".to_string(),
             "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue".to_string(),
@@ -123,7 +119,7 @@ mod tests {
 
     #[test]
     fn parse_line_test() {
-        let result = parse_line(&get_test_input1()[0]);
+        let result = parse_line(&get_test_input()[0]);
 
         assert_eq!(result.0, 1);
         assert_eq!(result.1.len(), 3);
@@ -143,14 +139,14 @@ mod tests {
 
     #[test]
     fn part1_ex_test() {
-        let result = part1(&TEST_LIMIT, &get_test_input1());
+        let result = part1(&TEST_LIMIT, &get_test_input());
 
         assert_eq!(result, 8);
     }
 
     #[test]
     fn part2_ex_test() {
-        let result = part2(&get_test_input1());
+        let result = part2(&get_test_input());
 
         assert_eq!(result, 2286);
     }

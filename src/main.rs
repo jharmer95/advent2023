@@ -42,6 +42,7 @@ impl AdventDay {
         match day_num {
             Ok(1) => Ok(Self::Day1),
             Ok(2) => Ok(Self::Day2),
+            Ok(3) => Ok(Self::Day2),
             Ok(x) if x > 0 && x <= 25 => Err(format!("Day {x} not yet implemented")),
             _ => Err(format!("invalid mod_name: {mod_name}")),
         }
@@ -51,6 +52,7 @@ impl AdventDay {
         match self {
             Self::Day1 => day_1::part1(input),
             Self::Day2 => day_2::part1(&day_2::TEST_LIMIT, input),
+            Self::Day3 => day_3::part1(input),
             _ => unreachable!(),
         }
     }
@@ -59,6 +61,7 @@ impl AdventDay {
         match self {
             Self::Day1 => day_1::part2(input),
             Self::Day2 => day_2::part2(input),
+            Self::Day3 => day_3::part2(input),
             _ => unreachable!(),
         }
     }
@@ -100,7 +103,7 @@ impl Display for AdventDay {
     }
 }
 
-const IMPLEMENTED_DAYS: &[AdventDay] = &[AdventDay::Day1, AdventDay::Day2];
+const IMPLEMENTED_DAYS: &[AdventDay] = &[AdventDay::Day1, AdventDay::Day2, AdventDay::Day3];
 
 fn help() {
     eprintln!("Usage: advent2023 day_<N>");
