@@ -42,7 +42,7 @@ impl AdventDay {
         match day_num {
             Ok(1) => Ok(Self::Day1),
             Ok(2) => Ok(Self::Day2),
-            Ok(3) => Ok(Self::Day2),
+            Ok(3) => Ok(Self::Day3),
             Ok(x) if x > 0 && x <= 25 => Err(format!("Day {x} not yet implemented")),
             _ => Err(format!("invalid mod_name: {mod_name}")),
         }
@@ -116,6 +116,9 @@ fn main() {
     if args.len() > 2 {
         help();
     }
+
+    println!("* * * * * * * * * * * * * *");
+    println!("*{:^25}*", "Advent of Code 2023");
 
     if args.len() == 1 {
         for &day in IMPLEMENTED_DAYS {

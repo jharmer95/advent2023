@@ -148,6 +148,6 @@ mod tests {
     fn part2_ex_test() {
         let result = part2(&get_test_input());
 
-        assert_eq!(result, 2286);
+        assert_eq!(result, 2_286);
     }
 }

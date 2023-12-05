@@ -5,12 +5,10 @@ pub fn part1(input: &[String]) -> u64 {
     number_list
         .iter()
         .filter_map(|num_entry| {
-            if symbol_list.iter().any(|sym_entry| {
-                (sym_entry.row >= num_entry.row.checked_sub(1).unwrap_or(0)
-                    && sym_entry.row <= num_entry.row + 1)
-                    && (sym_entry.column >= num_entry.range.0.checked_sub(1).unwrap_or(0)
-                        && sym_entry.column <= num_entry.range.1 + 1)
-            }) {
+            if symbol_list
+                .iter()
+                .any(|sym_entry| is_adjacent(sym_entry, num_entry))
+            {
                 Some(num_entry.number)
             } else {
                 None
@@ -31,11 +29,7 @@ pub fn part2(input: &[String]) -> u64 {
             }
 
             let matches = number_list.iter().filter_map(|num_entry| {
-                if ((sym_entry.row >= num_entry.row.checked_sub(1).unwrap_or(0)
-                    && sym_entry.row <= num_entry.row + 1)
-                    && (sym_entry.column >= num_entry.range.0.checked_sub(1).unwrap_or(0)
-                        && sym_entry.column <= num_entry.range.1 + 1))
-                {
+                if is_adjacent(sym_entry, num_entry) {
                     Some(num_entry.number)
                 } else {
                     None
@@ -66,7 +60,7 @@ struct NumberEntry {
 }
 
 impl NumberEntry {
-    fn new(number: u64, row: usize, range: (usize, usize)) -> Self {
+    const fn new(number: u64, row: usize, range: (usize, usize)) -> Self {
         Self { number, row, range }
     }
 }
@@ -78,7 +72,7 @@ struct SymbolEntry {
 }
 
 impl SymbolEntry {
-    fn new(symbol: char, row: usize, column: usize) -> Self {
+    const fn new(symbol: char, row: usize, column: usize) -> Self {
         Self {
             symbol,
             row,
@@ -128,17 +122,25 @@ fn parse_input(input: &[String]) -> (Vec<NumberEntry>, Vec<SymbolEntry>) {
 
             match tk {
                 Token::Number(n) => {
-                    number_list.push(NumberEntry::new(n, row, (ind_begin, ind_end)))
+                    number_list.push(NumberEntry::new(n, row, (ind_begin, ind_end)));
                 }
+
                 Token::Symbol(c) => symbol_list.push(SymbolEntry::new(c, row, ind_begin)),
                 _ => {}
             }
         }
 
-        tk = Token::Spacer
+        tk = Token::Spacer;
     }
 
     (number_list, symbol_list)
+}
+
+const fn is_adjacent(sym_entry: &SymbolEntry, num_entry: &NumberEntry) -> bool {
+    (sym_entry.row >= num_entry.row.saturating_sub(1)
+        && sym_entry.row <= num_entry.row.saturating_add(1))
+        && (sym_entry.column >= num_entry.range.0.saturating_sub(1)
+            && sym_entry.column <= num_entry.range.1.saturating_add(1))
 }
 
 #[cfg(test)]
@@ -164,13 +166,13 @@ mod tests {
     fn part1_ex_test() {
         let result = part1(&get_test_input());
 
-        assert_eq!(result, 4361);
+        assert_eq!(result, 4_361);
     }
 
     #[test]
     fn part2_ex_test() {
         let result = part2(&get_test_input());
 
-        assert_eq!(result, 467835);
+        assert_eq!(result, 467_835);
     }
 }
