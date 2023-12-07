@@ -53,6 +53,7 @@ enum Token {
     End,
 }
 
+#[derive(Clone, Debug, PartialEq)]
 struct NumberEntry {
     number: u64,
     row: usize,
@@ -65,6 +66,7 @@ impl NumberEntry {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 struct SymbolEntry {
     symbol: char,
     row: usize,
@@ -81,20 +83,20 @@ impl SymbolEntry {
     }
 }
 
-fn get_next(str: &[u8], idx: &mut usize) -> Token {
-    if *idx < str.len() {
-        *idx += 1;
-        match str[*idx - 1] {
+fn get_next_token(bytes: &[u8], index: &mut usize) -> Token {
+    if *index < bytes.len() {
+        *index += 1;
+        match bytes[*index - 1] {
             b'.' => Token::Spacer,
             ch => {
                 if ch.is_ascii_digit() {
                     let mut num_str = String::new();
 
-                    num_str.push(str[*idx - 1] as char);
+                    num_str.push(bytes[*index - 1] as char);
 
-                    while *idx < str.len() && str[*idx].is_ascii_digit() {
-                        num_str.push(str[*idx] as char);
-                        *idx += 1;
+                    while *index < bytes.len() && bytes[*index].is_ascii_digit() {
+                        num_str.push(bytes[*index] as char);
+                        *index += 1;
                     }
 
                     Token::Number(num_str.parse().unwrap())
@@ -113,19 +115,19 @@ fn parse_input(input: &[String]) -> (Vec<NumberEntry>, Vec<SymbolEntry>) {
     let mut number_list = Vec::new();
     let mut symbol_list = Vec::new();
 
-    for (row, line) in input.iter().enumerate() {
+    for (row_num, text) in input.iter().enumerate() {
         let mut index = 0;
         while tk != Token::End {
             let ind_begin = index;
-            tk = get_next(line.as_bytes(), &mut index);
+            tk = get_next_token(text.as_bytes(), &mut index);
             let ind_end = index - 1;
 
             match tk {
                 Token::Number(n) => {
-                    number_list.push(NumberEntry::new(n, row, (ind_begin, ind_end)));
+                    number_list.push(NumberEntry::new(n, row_num, (ind_begin, ind_end)));
                 }
 
-                Token::Symbol(c) => symbol_list.push(SymbolEntry::new(c, row, ind_begin)),
+                Token::Symbol(c) => symbol_list.push(SymbolEntry::new(c, row_num, ind_begin)),
                 _ => {}
             }
         }
@@ -149,17 +151,43 @@ mod tests {
 
     fn get_test_input() -> [String; 10] {
         [
-            "467..114..".to_string(),
-            "...*......".to_string(),
-            "..35..633.".to_string(),
-            "......#...".to_string(),
-            "617*......".to_string(),
-            ".....+.58.".to_string(),
-            "..592.....".to_string(),
-            "......755.".to_string(),
-            "...$.*....".to_string(),
-            ".664.598..".to_string(),
+            "467..114..".to_owned(),
+            "...*......".to_owned(),
+            "..35..633.".to_owned(),
+            "......#...".to_owned(),
+            "617*......".to_owned(),
+            ".....+.58.".to_owned(),
+            "..592.....".to_owned(),
+            "......755.".to_owned(),
+            "...$.*....".to_owned(),
+            ".664.598..".to_owned(),
         ]
+    }
+
+    #[test]
+    fn parse_input_test() {
+        let expected_numbers = vec![
+            NumberEntry {
+                number: 467,
+                row: 0,
+                range: (0, 2),
+            },
+            NumberEntry {
+                number: 114,
+                row: 0,
+                range: (5, 7),
+            },
+        ];
+        let expected_symbols = vec![SymbolEntry {
+            symbol: '*',
+            row: 1,
+            column: 3,
+        }];
+
+        let (numbers, symbols) = parse_input(&get_test_input()[0..=1]);
+
+        assert_eq!(numbers, expected_numbers);
+        assert_eq!(symbols, expected_symbols);
     }
 
     #[test]

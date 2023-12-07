@@ -4,11 +4,13 @@ use std::env;
 struct AdventDay {
     mod_name: &'static str,
     nice_name: &'static str,
+
+    // TODO: Can we refactor this to take &[&str] instead?
     part1_fn: fn(&[String]) -> u64,
     part2_fn: fn(&[String]) -> u64,
 }
 
-const IMPLEMENTED_DAYS: [AdventDay; 4] = [
+const IMPLEMENTED_DAYS: [AdventDay; 5] = [
     AdventDay {
         mod_name: "day_1",
         nice_name: "Day 1",
@@ -32,6 +34,12 @@ const IMPLEMENTED_DAYS: [AdventDay; 4] = [
         nice_name: "Day 4",
         part1_fn: day_4::part1,
         part2_fn: day_4::part2,
+    },
+    AdventDay {
+        mod_name: "day_5",
+        nice_name: "Day 5",
+        part1_fn: day_5::part1,
+        part2_fn: day_5::part2,
     },
 ];
 

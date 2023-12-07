@@ -63,3 +63,21 @@ fn day4_part2() {
 
     assert_eq!(result, 8_467_762);
 }
+
+#[test]
+fn day5_part1() {
+    let input = inputs::get_input::<String>("data/day_5.txt").expect("Could not parse path!");
+    let result = day_5::part1(&input);
+
+    assert_eq!(result, 309_796_150);
+}
+
+// TODO: Optimize so it doesn't have to be skipped
+#[test]
+#[cfg(not(debug_assertions))]
+fn day5_part2() {
+    let input = inputs::get_input::<String>("data/day_5.txt").expect("Could not parse path!");
+    let result = day_5::part2(&input);
+
+    assert_eq!(result, 50_716_416);
+}

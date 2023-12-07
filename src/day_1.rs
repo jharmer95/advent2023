@@ -54,22 +54,22 @@ mod tests {
 
     fn get_test_input1() -> [String; 4] {
         [
-            "1abc2".to_string(),
-            "pqr3stu8vwx".to_string(),
-            "a1b2c3d4e5f".to_string(),
-            "treb7uchet".to_string(),
+            "1abc2".to_owned(),
+            "pqr3stu8vwx".to_owned(),
+            "a1b2c3d4e5f".to_owned(),
+            "treb7uchet".to_owned(),
         ]
     }
 
     fn get_test_input2() -> [String; 7] {
         [
-            "two1nine".to_string(),
-            "eightwothree".to_string(),
-            "abcone2threexyz".to_string(),
-            "xtwone3four".to_string(),
-            "4nineeightseven2".to_string(),
-            "zoneight234".to_string(),
-            "7pqrstsixteen".to_string(),
+            "two1nine".to_owned(),
+            "eightwothree".to_owned(),
+            "abcone2threexyz".to_owned(),
+            "xtwone3four".to_owned(),
+            "4nineeightseven2".to_owned(),
+            "zoneight234".to_owned(),
+            "7pqrstsixteen".to_owned(),
         ]
     }
 
