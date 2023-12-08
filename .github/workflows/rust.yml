@@ -20,3 +20,15 @@ jobs:
       run: cargo build --release --verbose
     - name: Run tests
       run: cargo test --release --verbose
+
+  clippy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: rustup component add clippy
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: -- -W clippy::all -W clippy::pedantic -W clippy::nursery
