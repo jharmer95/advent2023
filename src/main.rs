@@ -1,4 +1,6 @@
+#[allow(clippy::wildcard_imports)]
 use advent2023::*;
+
 use std::env;
 
 struct AdventDay {
@@ -10,7 +12,7 @@ struct AdventDay {
     part2_fn: fn(&[String]) -> u64,
 }
 
-const IMPLEMENTED_DAYS: [AdventDay; 5] = [
+const IMPLEMENTED_DAYS: [AdventDay; 6] = [
     AdventDay {
         mod_name: "day_1",
         nice_name: "Day 1",
@@ -40,6 +42,12 @@ const IMPLEMENTED_DAYS: [AdventDay; 5] = [
         nice_name: "Day 5",
         part1_fn: day_5::part1,
         part2_fn: day_5::part2,
+    },
+    AdventDay {
+        mod_name: "day_6",
+        nice_name: "Day 6",
+        part1_fn: day_6::part1,
+        part2_fn: day_6::part2,
     },
 ];
 
