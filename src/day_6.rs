@@ -66,20 +66,34 @@ struct RaceRecord {
 }
 
 impl RaceRecord {
-    const fn time_beats_record(&self, time: u64) -> bool {
-        let distance = (self.time - time) * time;
-        distance > self.distance
-    }
-
+    #[cfg(not(feature = "fast_math"))]
     fn get_button_time_record_range(&self) -> (u64, u64) {
-        let min = (1..self.time)
-            .find(|num| self.time_beats_record(*num))
-            .unwrap_or(0);
+        let check_record = |time: u64| {
+            let distance = (self.time - time) * time;
+            distance > self.distance
+        };
+
+        // Option 1: Double-ended linear search
+        let min = (1..self.time).find(|num| check_record(*num)).unwrap_or(0);
 
         let max = (1..self.time)
             .rev()
-            .find(|num| self.time_beats_record(*num))
+            .find(|num| check_record(*num))
             .unwrap_or(0);
+
+        (min, max)
+    }
+
+    #[cfg(feature = "fast_math")]
+    fn get_button_time_record_range(&self) -> (u64, u64) {
+        // Option 2: Linear equation (distance = time * (self.time - time))
+        // - Faster, but potential for off by one errors (ex: f32 fails)
+        let ftime = self.time as f64;
+
+        let dev = f64::sqrt(4.0f64.mul_add(-(self.distance as f64), ftime.powi(2)));
+
+        let min = (0.5f64 * (ftime - dev)) as u64 + 1;
+        let max = f64::ceil(0.5f64 * (ftime + dev)) as u64 - 1;
 
         (min, max)
     }
