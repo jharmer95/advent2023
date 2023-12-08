@@ -22,6 +22,8 @@ jobs:
       run: cargo test --release --verbose
 
   clippy:
+    permissions:
+      checks: write
 
     runs-on: ubuntu-latest
 
