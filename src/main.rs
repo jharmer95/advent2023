@@ -7,12 +7,11 @@ struct AdventDay {
     mod_name: &'static str,
     nice_name: &'static str,
 
-    // TODO: Can we refactor this to take &[&str] instead?
     part1_fn: fn(&[String]) -> u64,
     part2_fn: fn(&[String]) -> u64,
 }
 
-const IMPLEMENTED_DAYS: [AdventDay; 6] = [
+const IMPLEMENTED_DAYS: [AdventDay; 7] = [
     AdventDay {
         mod_name: "day_1",
         nice_name: "Day 1",
@@ -48,6 +47,12 @@ const IMPLEMENTED_DAYS: [AdventDay; 6] = [
         nice_name: "Day 6",
         part1_fn: day_6::part1,
         part2_fn: day_6::part2,
+    },
+    AdventDay {
+        mod_name: "day_7",
+        nice_name: "Day 7",
+        part1_fn: day_7::part1,
+        part2_fn: day_7::part2,
     },
 ];
 
