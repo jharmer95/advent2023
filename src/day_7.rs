@@ -1,28 +1,27 @@
-use crate::day_7::HandValue::{FiveOfKind, FourOfKind, FullHouse, OnePair, ThreeOfKind, TwoPair};
 use std::cmp::Ordering;
 use std::collections::HashMap;
 
 #[must_use]
-pub fn part1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> i64 {
     let mut hands = parse_input(input, false);
     hands.sort();
 
     hands
         .iter()
         .enumerate()
-        .map(|(x, y)| (x + 1) as u64 * y.wager)
+        .map(|(x, y)| (x + 1) as i64 * y.wager)
         .sum()
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     let mut hands = parse_input(input, true);
     hands.sort();
 
     hands
         .iter()
         .enumerate()
-        .map(|(x, y)| (x + 1) as u64 * y.wager)
+        .map(|(x, y)| (x + 1) as i64 * y.wager)
         .sum()
 }
 
@@ -40,7 +39,7 @@ enum HandValue {
 #[derive(Debug, Default, Eq, PartialEq)]
 struct Hand {
     cards: [u8; 5],
-    wager: u64,
+    wager: i64,
 }
 
 impl Hand {
@@ -57,7 +56,7 @@ impl Hand {
         let joker_count = *char_map.get(&1).unwrap_or(&0);
 
         if joker_count == 5 {
-            return FiveOfKind;
+            return HandValue::FiveOfKind;
         }
 
         let mode = char_map
@@ -78,25 +77,25 @@ impl Hand {
         {
             match v {
                 5 => {
-                    return FiveOfKind;
+                    return HandValue::FiveOfKind;
                 }
                 4 => {
-                    return FourOfKind;
+                    return HandValue::FourOfKind;
                 }
                 3 => {
                     if last_found == 2 {
-                        return FullHouse;
+                        return HandValue::FullHouse;
                     }
 
                     last_found = 3;
                 }
                 2 => {
                     if last_found == 3 {
-                        return FullHouse;
+                        return HandValue::FullHouse;
                     }
 
                     if last_found == 2 {
-                        return TwoPair;
+                        return HandValue::TwoPair;
                     }
 
                     last_found = 2;
@@ -106,11 +105,11 @@ impl Hand {
         }
 
         if last_found == 3 {
-            return ThreeOfKind;
+            return HandValue::ThreeOfKind;
         }
 
         if last_found == 2 {
-            return OnePair;
+            return HandValue::OnePair;
         }
 
         HandValue::HighCard
@@ -224,7 +223,7 @@ mod tests {
         };
         let result = test_hand.get_value();
 
-        assert_eq!(result, OnePair);
+        assert_eq!(result, HandValue::OnePair);
     }
 
     #[test]

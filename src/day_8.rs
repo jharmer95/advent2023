@@ -1,7 +1,7 @@
-use std::{collections::HashMap, fmt::Display};
+use std::collections::HashMap;
 
 #[must_use]
-pub fn part1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> i64 {
     const TERM_NODE: Node = Node::new(*b"ZZZ");
 
     let network = parse_input(input);
@@ -10,10 +10,10 @@ pub fn part1(input: &[String]) -> u64 {
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     let network = parse_input(input);
 
-    let counts: Vec<u64> = network
+    let counts: Vec<i64> = network
         .nodes
         .map
         .keys()
@@ -24,12 +24,12 @@ pub fn part2(input: &[String]) -> u64 {
     lcm(&counts)
 }
 
-fn count_steps(network: &Network, start: Node, pred: fn(Node) -> bool) -> u64 {
+fn count_steps(network: &Network, start: Node, pred: fn(Node) -> bool) -> i64 {
     let mut current_node = start;
 
     for step in 0.. {
         if pred(current_node) {
-            return step as u64;
+            return step as i64;
         }
 
         let instruction = network.get_instruction(step);
@@ -43,7 +43,7 @@ fn count_steps(network: &Network, start: Node, pred: fn(Node) -> bool) -> u64 {
     unreachable!()
 }
 
-fn lcm(nums: &[u64]) -> u64 {
+fn lcm(nums: &[i64]) -> i64 {
     if nums.len() == 1 {
         return nums[0];
     }
@@ -53,7 +53,7 @@ fn lcm(nums: &[u64]) -> u64 {
     a * b / gcd(a, b)
 }
 
-fn gcd(a: u64, b: u64) -> u64 {
+fn gcd(a: i64, b: i64) -> i64 {
     if b == 0 {
         return a;
     }
@@ -98,18 +98,6 @@ impl NodeMap {
 
     fn right(&self, node: Node) -> Option<Node> {
         self.map.get(&node).map(|x| x.1)
-    }
-}
-
-impl Display for NodeMap {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "{{")?;
-
-        for (k, v) in &self.map {
-            writeln!(f, "  {:?} = ({:?}, {:?})", k.id, v.0.id, v.1.id)?;
-        }
-
-        write!(f, "}}")
     }
 }
 

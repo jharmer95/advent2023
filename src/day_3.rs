@@ -1,5 +1,5 @@
 #[must_use]
-pub fn part1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> i64 {
     let (number_list, symbol_list) = parse_input(input);
 
     number_list
@@ -18,7 +18,7 @@ pub fn part1(input: &[String]) -> u64 {
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     let (number_list, symbol_list) = parse_input(input);
 
     symbol_list
@@ -37,7 +37,7 @@ pub fn part2(input: &[String]) -> u64 {
             });
 
             if matches.clone().count() == 2 {
-                Some(matches.product::<u64>())
+                Some(matches.product::<i64>())
             } else {
                 None
             }
@@ -47,7 +47,7 @@ pub fn part2(input: &[String]) -> u64 {
 
 #[derive(Debug, Eq, PartialEq)]
 enum Token {
-    Number(u64),
+    Number(i64),
     Symbol(char),
     Spacer,
     End,
@@ -55,13 +55,13 @@ enum Token {
 
 #[derive(Clone, Debug, PartialEq)]
 struct NumberEntry {
-    number: u64,
+    number: i64,
     row: usize,
     range: (usize, usize),
 }
 
 impl NumberEntry {
-    const fn new(number: u64, row: usize, range: (usize, usize)) -> Self {
+    const fn new(number: i64, row: usize, range: (usize, usize)) -> Self {
         Self { number, row, range }
     }
 }

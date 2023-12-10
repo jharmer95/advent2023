@@ -1,5 +1,5 @@
 #[must_use]
-pub fn part1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> i64 {
     let records = parse_input1(input);
 
     records
@@ -10,7 +10,7 @@ pub fn part1(input: &[String]) -> u64 {
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     let record = parse_input2(input);
 
     let (min, max) = record.get_button_time_record_range();
@@ -23,7 +23,7 @@ fn parse_input1(input: &[String]) -> Vec<RaceRecord> {
         if s.is_empty() || !s.chars().all(|c| c.is_ascii_digit()) {
             None
         } else {
-            s.parse::<u64>().ok()
+            s.parse().ok()
         }
     });
 
@@ -31,7 +31,7 @@ fn parse_input1(input: &[String]) -> Vec<RaceRecord> {
         if s.is_empty() || !s.chars().all(|c| c.is_ascii_digit()) {
             None
         } else {
-            s.parse::<u64>().ok()
+            s.parse().ok()
         }
     });
 
@@ -61,14 +61,14 @@ fn parse_input2(input: &[String]) -> RaceRecord {
 
 #[derive(Debug, Eq, PartialEq)]
 struct RaceRecord {
-    time: u64,
-    distance: u64,
+    time: i64,
+    distance: i64,
 }
 
 impl RaceRecord {
     #[cfg(not(feature = "fast_math"))]
-    fn get_button_time_record_range(&self) -> (u64, u64) {
-        let check_record = |time: u64| {
+    fn get_button_time_record_range(&self) -> (i64, i64) {
+        let check_record = |time: i64| {
             let distance = (self.time - time) * time;
             distance > self.distance
         };
@@ -85,15 +85,15 @@ impl RaceRecord {
     }
 
     #[cfg(feature = "fast_math")]
-    fn get_button_time_record_range(&self) -> (u64, u64) {
+    fn get_button_time_record_range(&self) -> (i64, i64) {
         // Option 2: Linear equation (distance = time * (self.time - time))
         // - Faster, but potential for off by one errors (ex: f32 fails)
         let ftime = self.time as f64;
 
         let dev = f64::sqrt(4.0f64.mul_add(-(self.distance as f64), ftime.powi(2)));
 
-        let min = (0.5f64 * (ftime - dev)) as u64 + 1;
-        let max = f64::ceil(0.5f64 * (ftime + dev)) as u64 - 1;
+        let min = (0.5f64 * (ftime - dev)) as i64 + 1;
+        let max = f64::ceil(0.5f64 * (ftime + dev)) as i64 - 1;
 
         (min, max)
     }

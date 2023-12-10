@@ -7,8 +7,8 @@ struct AdventDay {
     mod_name: &'static str,
     nice_name: &'static str,
 
-    part1_fn: fn(&[String]) -> u64,
-    part2_fn: fn(&[String]) -> u64,
+    part1_fn: fn(&[String]) -> i64,
+    part2_fn: fn(&[String]) -> i64,
 }
 
 const IMPLEMENTED_DAYS: [AdventDay; 8] = [

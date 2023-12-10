@@ -1,5 +1,5 @@
 #[must_use]
-pub fn part1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> i64 {
     let mut score = 0;
 
     for line in input {
@@ -7,7 +7,7 @@ pub fn part1(input: &[String]) -> u64 {
         let match_count = get_win_count(&win, &play);
 
         if match_count != 0 {
-            score += 2u64.pow(match_count - 1);
+            score += 2i64.pow(match_count - 1);
         }
     }
 
@@ -15,7 +15,7 @@ pub fn part1(input: &[String]) -> u64 {
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     let length = input.len();
     let mut trackers = vec![1; length];
 
@@ -31,7 +31,7 @@ pub fn part2(input: &[String]) -> u64 {
     trackers.iter().sum()
 }
 
-fn parse_numbers(line: &str) -> (Vec<u64>, Vec<u64>) {
+fn parse_numbers(line: &str) -> (Vec<i64>, Vec<i64>) {
     let win_start = line.find(':').unwrap();
     let play_start = line.find('|').unwrap();
 
@@ -41,7 +41,7 @@ fn parse_numbers(line: &str) -> (Vec<u64>, Vec<u64>) {
     )
 }
 
-fn get_numbers(line: &str) -> Vec<u64> {
+fn get_numbers(line: &str) -> Vec<i64> {
     let num_split: Vec<&str> = line.split(' ').collect();
     let mut num_list = Vec::new();
 
@@ -56,7 +56,7 @@ fn get_numbers(line: &str) -> Vec<u64> {
 }
 
 #[allow(clippy::cast_possible_truncation)]
-fn get_win_count(win_nums: &[u64], play_nums: &[u64]) -> u32 {
+fn get_win_count(win_nums: &[i64], play_nums: &[i64]) -> u32 {
     play_nums.iter().filter(|n| win_nums.contains(n)).count() as u32
 }
 

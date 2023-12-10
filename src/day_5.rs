@@ -2,7 +2,7 @@ use std::iter::Skip;
 use std::slice::Iter;
 
 #[must_use]
-pub fn part1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> i64 {
     let almanac = parse_input(input);
 
     almanac
@@ -14,7 +14,7 @@ pub fn part1(input: &[String]) -> u64 {
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     // TODO: Further optimize
     // Ideas:
     // - Run in parallel
@@ -22,20 +22,20 @@ pub fn part2(input: &[String]) -> u64 {
 
     let almanac = parse_input(input);
 
-    (0..=u64::MAX)
+    (0..=i64::MAX)
         .find(|location| almanac.is_seed_in_range(almanac.location_to_seed(*location)))
         .unwrap_or(0)
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct RangeMap {
-    dest_start: u64,
-    src_start: u64,
-    range_size: u64,
+    dest_start: i64,
+    src_start: i64,
+    range_size: i64,
 }
 
 impl RangeMap {
-    const fn new(dest_start: u64, src_start: u64, range_size: u64) -> Self {
+    const fn new(dest_start: i64, src_start: i64, range_size: i64) -> Self {
         Self {
             dest_start,
             src_start,
@@ -43,7 +43,7 @@ impl RangeMap {
         }
     }
 
-    const fn get_destination(&self, source: u64) -> Option<u64> {
+    const fn get_destination(&self, source: i64) -> Option<i64> {
         if source < self.src_start || source >= self.src_start + self.range_size {
             None
         } else {
@@ -52,7 +52,7 @@ impl RangeMap {
         }
     }
 
-    const fn get_source(&self, dest: u64) -> Option<u64> {
+    const fn get_source(&self, dest: i64) -> Option<i64> {
         if dest < self.dest_start || dest >= self.dest_start + self.range_size {
             None
         } else {
@@ -64,7 +64,7 @@ impl RangeMap {
 
 #[derive(Clone, Debug, Default, PartialEq)]
 struct Almanac {
-    seeds: Vec<u64>,
+    seeds: Vec<i64>,
     seed_to_soil: Vec<RangeMap>,
     soil_to_fertilizer: Vec<RangeMap>,
     fertilizer_to_water: Vec<RangeMap>,
@@ -75,7 +75,7 @@ struct Almanac {
 }
 
 impl Almanac {
-    fn seed_to_location(&self, seed: u64) -> u64 {
+    fn seed_to_location(&self, seed: i64) -> i64 {
         let soil = Self::get_mapped_value(seed, &self.seed_to_soil);
         let fertilizer = Self::get_mapped_value(soil, &self.soil_to_fertilizer);
         let water = Self::get_mapped_value(fertilizer, &self.fertilizer_to_water);
@@ -86,7 +86,7 @@ impl Almanac {
         Self::get_mapped_value(humidity, &self.humidity_to_location)
     }
 
-    fn location_to_seed(&self, location: u64) -> u64 {
+    fn location_to_seed(&self, location: i64) -> i64 {
         let humidity = Self::get_rev_mapped_value(location, &self.humidity_to_location);
         let temp = Self::get_rev_mapped_value(humidity, &self.temp_to_humidity);
         let light = Self::get_rev_mapped_value(temp, &self.light_to_temp);
@@ -97,7 +97,7 @@ impl Almanac {
         Self::get_rev_mapped_value(soil, &self.seed_to_soil)
     }
 
-    fn is_seed_in_range(&self, seed: u64) -> bool {
+    fn is_seed_in_range(&self, seed: i64) -> bool {
         for chunk in self.seeds.chunks_exact(2) {
             let begin = chunk[0];
             let end = begin + chunk[1];
@@ -110,7 +110,7 @@ impl Almanac {
         false
     }
 
-    fn get_mapped_value(key: u64, map: &Vec<RangeMap>) -> u64 {
+    fn get_mapped_value(key: i64, map: &Vec<RangeMap>) -> i64 {
         for range_map in map {
             let dest = range_map.get_destination(key);
 
@@ -122,7 +122,7 @@ impl Almanac {
         key
     }
 
-    fn get_rev_mapped_value(key: u64, map: &Vec<RangeMap>) -> u64 {
+    fn get_rev_mapped_value(key: i64, map: &Vec<RangeMap>) -> i64 {
         for range_map in map {
             let dest = range_map.get_source(key);
 

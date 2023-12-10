@@ -1,16 +1,16 @@
 #[must_use]
-pub fn part1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> i64 {
     let numbers = parse_input1(input);
     numbers.iter().sum()
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     let numbers = parse_input2(input);
     numbers.iter().sum()
 }
 
-fn parse_input1(input: &[String]) -> Vec<u64> {
+fn parse_input1(input: &[String]) -> Vec<i64> {
     let mut numbers = Vec::with_capacity(input.len());
 
     for line in input {
@@ -22,13 +22,13 @@ fn parse_input1(input: &[String]) -> Vec<u64> {
         let first = digits.next().unwrap();
         let last = digits.last().unwrap_or(first);
 
-        numbers.push(u64::from(first * 10 + last));
+        numbers.push(i64::from(first * 10 + last));
     }
 
     numbers
 }
 
-fn parse_input2(input: &[String]) -> Vec<u64> {
+fn parse_input2(input: &[String]) -> Vec<i64> {
     let mut new_input = Vec::new();
 
     for line in input {

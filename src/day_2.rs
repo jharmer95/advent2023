@@ -1,7 +1,7 @@
 use regex::Regex;
 
 #[must_use]
-pub fn part1(limits: &BlockCount, input: &[String]) -> u64 {
+pub fn part1(limits: &BlockCount, input: &[String]) -> i64 {
     input
         .iter()
         .map(|s| {
@@ -17,7 +17,7 @@ pub fn part1(limits: &BlockCount, input: &[String]) -> u64 {
 }
 
 #[must_use]
-pub fn part2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> i64 {
     input
         .iter()
         .map(|s| {
@@ -46,14 +46,14 @@ pub fn part2(input: &[String]) -> u64 {
 
 #[derive(Clone, PartialEq, Eq, Debug, Default)]
 pub struct BlockCount {
-    red: u64,
-    green: u64,
-    blue: u64,
+    red: i64,
+    green: i64,
+    blue: i64,
 }
 
 impl BlockCount {
     #[must_use]
-    const fn new(red: u64, green: u64, blue: u64) -> Self {
+    const fn new(red: i64, green: i64, blue: i64) -> Self {
         Self { red, green, blue }
     }
 
@@ -63,7 +63,7 @@ impl BlockCount {
     }
 
     #[must_use]
-    const fn power(&self) -> u64 {
+    const fn power(&self) -> i64 {
         self.red * self.green * self.blue
     }
 }
@@ -74,7 +74,7 @@ pub const TEST_LIMIT: BlockCount = BlockCount {
     blue: 14,
 };
 
-fn parse_line(line: &str) -> (u64, Vec<BlockCount>) {
+fn parse_line(line: &str) -> (i64, Vec<BlockCount>) {
     let re = Regex::new(r"^Game ([0-9]+): (.*)").unwrap();
     let reg_red = Regex::new(r"([0-9]+) red").unwrap();
     let reg_green = Regex::new(r"([0-9]+) green").unwrap();
@@ -84,7 +84,7 @@ fn parse_line(line: &str) -> (u64, Vec<BlockCount>) {
     let mut id = 0;
 
     let get_color_count = |line, reg_ex: &Regex| match reg_ex.captures(line).map(|c| c.extract()) {
-        Some((_, [count])) => count.parse::<u64>().unwrap(),
+        Some((_, [count])) => count.parse().unwrap(),
         None => 0,
     };
 
