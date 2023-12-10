@@ -140,7 +140,7 @@ impl PartialOrd for Hand {
 fn parse_input(input: &[String], part2: bool) -> Vec<Hand> {
     input
         .iter()
-        .map(|s| s.split(' ').take(2))
+        .map(|s| s.split_whitespace().take(2))
         .map(|mut split| {
             let card_str = split.next().unwrap();
             let wager_str = split.next().unwrap();

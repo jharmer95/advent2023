@@ -129,3 +129,19 @@ fn day8_part2() {
 
     assert_eq!(result, 18_215_611_419_223);
 }
+
+#[test]
+fn day9_part1() {
+    let input = inputs::get_input::<String>("data/day_9.txt").expect("Could not parse path!");
+    let result = day_9::part1(&input);
+
+    assert_eq!(result, 1_987_402_313);
+}
+
+#[test]
+fn day9_part2() {
+    let input = inputs::get_input::<String>("data/day_9.txt").expect("Could not parse path!");
+    let result = day_9::part2(&input);
+
+    assert_eq!(result, 900);
+}

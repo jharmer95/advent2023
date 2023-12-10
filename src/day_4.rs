@@ -42,7 +42,7 @@ fn parse_numbers(line: &str) -> (Vec<i64>, Vec<i64>) {
 }
 
 fn get_numbers(line: &str) -> Vec<i64> {
-    let num_split: Vec<&str> = line.split(' ').collect();
+    let num_split: Vec<&str> = line.split_whitespace().collect();
     let mut num_list = Vec::new();
 
     for seq in num_split

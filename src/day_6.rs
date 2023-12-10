@@ -19,7 +19,7 @@ pub fn part2(input: &[String]) -> i64 {
 }
 
 fn parse_input1(input: &[String]) -> Vec<RaceRecord> {
-    let times = input[0].split(' ').filter_map(|s| {
+    let times = input[0].split_whitespace().filter_map(|s| {
         if s.is_empty() || !s.chars().all(|c| c.is_ascii_digit()) {
             None
         } else {
@@ -27,7 +27,7 @@ fn parse_input1(input: &[String]) -> Vec<RaceRecord> {
         }
     });
 
-    let distances = input[1].split(' ').filter_map(|s| {
+    let distances = input[1].split_whitespace().filter_map(|s| {
         if s.is_empty() || !s.chars().all(|c| c.is_ascii_digit()) {
             None
         } else {

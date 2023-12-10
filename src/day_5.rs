@@ -140,7 +140,7 @@ fn parse_input(input: &[String]) -> Almanac {
 
     Almanac {
         seeds: input[0]
-            .split(' ')
+            .split_whitespace()
             .skip(1)
             .map(|s| s.parse().unwrap())
             .collect(),
@@ -160,7 +160,7 @@ fn get_next_map(iter: &mut Skip<Iter<String>>) -> Vec<RangeMap> {
     for mut split in iter
         .skip_while(|s| !s.chars().all(|c| c.is_ascii_digit() || c == ' '))
         .take_while(|s| !s.is_empty())
-        .map(|s| s.split(' '))
+        .map(|s| s.split_whitespace())
     {
         map.push(RangeMap::new(
             split.next().unwrap().parse().unwrap(),
