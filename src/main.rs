@@ -11,7 +11,7 @@ struct AdventDay {
     part2_fn: fn(&[String]) -> i64,
 }
 
-const IMPLEMENTED_DAYS: [AdventDay; 9] = [
+const IMPLEMENTED_DAYS: [AdventDay; 10] = [
     AdventDay {
         mod_name: "day_1",
         nice_name: "Day 1",
@@ -65,6 +65,12 @@ const IMPLEMENTED_DAYS: [AdventDay; 9] = [
         nice_name: "Day 9",
         part1_fn: day_9::part1,
         part2_fn: day_9::part2,
+    },
+    AdventDay {
+        mod_name: "day_10",
+        nice_name: "Day 10",
+        part1_fn: day_10::part1,
+        part2_fn: day_10::part2,
     },
 ];
 

@@ -1,3 +1,5 @@
+//! Integration tests
+
 use advent2023::*;
 
 #[test]
@@ -144,4 +146,12 @@ fn day9_part2() {
     let result = day_9::part2(&input);
 
     assert_eq!(result, 900);
+}
+
+#[test]
+fn day10_part1() {
+    let input = inputs::get_input::<String>("data/day_10.txt").expect("Could not parse path!");
+    let result = day_10::part1(&input);
+
+    assert_eq!(result, 6_768);
 }
